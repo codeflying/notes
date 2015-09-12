@@ -45,9 +45,12 @@ dispatch_async(dispatch_get_main_queue(), ^{ /* 更新UI */ })
 }
 ```
 
-经过细读代码，最后找到了问题所在。发现在插入消息A时在代码(2)处构造了sections#A，在代码(2)处block还未完成时，这时又插入消息B，此时由于dataSource的大小还未发现变化，生成的sections#B 与sections#A 的indexSet发生了重叠，使得刷新用到的indexSet少于要刷新的部分，导致部分消息不能显示。
+经过细读代码，最后找到了问题所在。在插入消息A时在代码(2)处得出了待刷新的indexSet（记为sectionsA），如果在代码(3)处block还未完成时又插入消息B，此时由于dataSource数组大小还未发生改变，所以得到的新的待刷新indexSet(记为sectionsB)与之前得到的sectionsA的indexSet会有重叠，从而使得刷新用到的indexSet少于要刷新的部分，导致部分消息不能显示。
 
-既然已经发生了问题的所在就好办了。为了解决这个问题，有多种方法，其中一种方法是可以将代码(1)中的生成sections的代码搬到tableView中的beginUpdates与endUpdates中间的(3)处；另一种方法是将(2)处的**dispatch\_async**改为**dispatch\_sync**，这样就是在必须要等到当前消息插入并且更新UI完成后才会插入下一条消息，肯定就不会再出现重叠的问题了。
+找到问题所在，可以说已经解决了问题的百分之九十。有多种方法可供选择，以下是我想到的两种办法：
+
+1. 一种办法是可以将代码(2)中的生成sections的代码搬到tableView中的beginUpdates与endUpdates中间的(4)处；
+2. 另一种方法是将(3)处的**dispatch\_async**改为**dispatch\_sync**，这样就是在必须要等到当前消息插入并且更新UI完成后才会插入下一条消息，肯定就不会再出现重叠的问题了。
 
 ##dispatch\_sync死锁问题
 
