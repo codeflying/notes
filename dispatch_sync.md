@@ -1,4 +1,4 @@
-#被遗忘的dispatch\_sync
+#GCD多线程系列之被遗忘的dispatch\_sync
 
 ##dispatch\_async和dispatch\_sync
 
@@ -49,12 +49,42 @@ dispatch_async(dispatch_get_main_queue(), ^{ /* 更新UI */ })
 
 找到问题所在，可以说已经解决了问题的百分之九十。有多种方法可供选择，以下是我想到的两种办法：
 
-1. 一种办法是可以将代码(2)中的生成sections的代码搬到tableView中的beginUpdates与endUpdates中间的(4)处；
+1. 一种办法是可以将代码(2)中生成sections的代码搬到tableView中的beginUpdates与endUpdates中间的(4)处；
 2. 另一种方法是将(3)处的**dispatch\_async**改为**dispatch\_sync**，这样就是在必须要等到当前消息插入并且更新UI完成后才会插入下一条消息，肯定就不会再出现重叠的问题了。
+
+##dispatch\_sync使用场景
+
+###AFNetworking
+
+在AFNetworking中dataTask都是在一个串行队列url\_session\_manager\_creation\_queue()中创建的，如下代码所示：
+
+```objc
+- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request
+                            completionHandler:(void (^)(NSURLResponse *response, id responseObject, NSError *error))completionHandler
+{
+    __block NSURLSessionDataTask *dataTask = nil;
+    dispatch_sync(url_session_manager_creation_queue(), ^{
+        dataTask = [self.session dataTaskWithRequest:request];
+    });
+
+    [self addDelegateForDataTask:dataTask completionHandler:completionHandler];
+
+    return dataTask;
+}
+```
+
+我阅读上面的代码之后马上产生了如下疑问
+>1. 为什么dataTask的创建要在一个串行队列中进行呢？
+>2. 为什么要使用dispatch\_sync而不是dispatch\_async呢？
+
+关于问题1的确让人感到费解，直接创建不就可以吗？经过查找资料发现《Effective Objective-C 2.0》中的`Item 41: Prefer Dispatch Queues to Locks for Synchronization`，把串行队列当同步锁来用，这种作法主要是为了保证程序运行的线程安全，难道`dataTaskWithRequest`方法是非线程安全的？从iOS的文档中没找到相应描述，也没有源码可查，只能暂时按下心中的疑虑。
+
+问题2比较好解释，由于需要在创建dataTask之后，还要对它进行一些其它的操作并返回，所以此时必须使用dispatch\_sync, 而不是dispatch\_async。
+
 
 ##dispatch\_sync死锁问题
 
-在上一部分，讲述了使用dispatch_sync带来的好处，它非常明显；同样的，如果使用不当，更会带来严重的问题。
+在之前的部分，讲述了使用dispatch_sync带来的好处，它非常明显；同样的，如果使用不当，更会带来严重的问题。
 
 **在queue A中dispatch\_sync一个block到queue A，将会导致死锁。**
 
@@ -65,6 +95,7 @@ dispatch_sync(dispatch_get_main_queue(), ^{});
 ```
 
 将导致主线程死锁，分析如下：
+
 当代码执行到此条语句时，会阻塞主队列直到block中的任务完成；但由于主队列是FIFO的，必须要完成当前的任务才能去执行block中的任务；从而造成了死锁，将会永远地等待下去。
 
 为了防止在主线程发生这种事情，可以使用诸如**dispatch\_sync\_main\_safe**这样自定义的函数，如下所示:
@@ -80,9 +111,8 @@ void dispatch_sync_main_safe(dispatch_block_t block) {
 }
 ```
 
+
 ##总结
 在使用dispatch\_sync时，固然要小心谨慎以防止死锁，但也不能因噎废食，在适当的场景下dispatch\_sync还是非常有必要的；除了本文中提及的场景外，在一些处理sqlite数据库的操作、网络下载（如AFNetworking）中，使用dispatch\_sync都会带来很大的便利。
-
-
 
 
