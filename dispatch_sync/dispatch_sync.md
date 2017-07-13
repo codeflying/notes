@@ -52,9 +52,9 @@ dispatch_async(dispatch_get_main_queue(), ^{ /* 更新UI */ })
 1. 一种办法是可以将代码(2)中生成sections的代码搬到tableView中的beginUpdates与endUpdates中间的(4)处；
 2. 另一种方法是将(3)处的**dispatch\_async**改为**dispatch\_sync**，这样就是在必须要等到当前消息插入并且更新UI完成后才会插入下一条消息，肯定就不会再出现重叠的问题了。
 
-##dispatch\_sync使用场景
+## dispatch\_sync使用场景
 
-###AFNetworking
+### AFNetworking
 
 在AFNetworking中dataTask都是在一个串行队列url\_session\_manager\_creation\_queue()中创建的，如下代码所示：
 
@@ -82,7 +82,7 @@ dispatch_async(dispatch_get_main_queue(), ^{ /* 更新UI */ })
 问题2比较好解释，由于需要在创建dataTask之后，还要对它进行一些其它的操作并返回，所以此时必须使用dispatch\_sync, 而不是dispatch\_async。
 
 
-##dispatch\_sync死锁问题
+## dispatch\_sync死锁问题
 
 在之前的部分，讲述了使用dispatch_sync带来的好处，它非常明显；同样的，如果使用不当，更会带来严重的问题。
 
@@ -112,7 +112,7 @@ void dispatch_sync_main_safe(dispatch_block_t block) {
 ```
 
 
-##总结
+## 总结
 在使用dispatch\_sync时，固然要小心谨慎以防止死锁，但也不能因噎废食，在适当的场景下dispatch\_sync还是非常有必要的；除了本文中提及的场景外，在一些处理sqlite数据库的操作、网络下载（如AFNetworking）中，使用dispatch\_sync都会带来很大的便利。
 
 
