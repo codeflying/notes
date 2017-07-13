@@ -1,6 +1,6 @@
-#GCD多线程系列之被遗忘的dispatch\_sync
+# GCD多线程系列之被遗忘的dispatch\_sync
 
-##dispatch\_async和dispatch\_sync
+## dispatch\_async和dispatch\_sync
 
 初学iOS开发时，忘记把更新UI操作放入主线程总是很容易的一件事，发生过很多当时认为很不科学的灵异事件，惊呼怎么这么奇怪，也为此吃过不少苦头。
 
