@@ -12,18 +12,18 @@
 ## @interface
 其中interface内部布局如下所示, 要实现的protocol新起一行，每一个占一行； 分块按属性，类方法，实例方法排序，每块之间空一行。其中具体的排版按以下方式。
 ```objc
-    @interface Person : NSObject
-    <Protocol1,
-    Protocol2>
+@interface Person : NSObject
+<Protocol1,
+Protocol2>
 
-    @property (nonatomic, strong) NSString *firstName;
-    @property (nonatomic, strong) NSString *lastName;
-    @property (nonatomic, assign) Gender gender;
-    @property (nonatomic, assign) NSInteger age;
+@property (nonatomic, strong) NSString *firstName;
+@property (nonatomic, strong) NSString *lastName;
+@property (nonatomic, assign) Gender gender;
+@property (nonatomic, assign) NSInteger age;
 
-    + (instancetype)personWithFirstName:(NSString *)name lastName:(NSString *)lastName gender:(Gender)gender age:(NSInteger)age;
++ (instancetype)personWithFirstName:(NSString *)name lastName:(NSString *)lastName gender:(Gender)gender age:(NSInteger)age;
 
-    - (NSString *)fullName;
+- (NSString *)fullName;
 ```
 
 ## 语法
