@@ -79,3 +79,6 @@ Protocol2>
 ## 能不放到 ViewController里的尽量不放在到ViewController
 由于ViewController都是跟具体的业务逻辑相关，重用的可能性非常低。如果将能不放在ViewController的逻辑移出到其它地方，一个是便于重用与测试，二个以解决ViewController臃肿后期不好维护的问题。
 
+## 不要滥用 Singleton
+Singleton模式提供了一种非常方便的使用方式，其实它就相当于一个全局变量。如果无节制的使用，会导致内存常驻，当使用不到时，内存仍然得不到释放。因此，在能不用Singleton模式时就尽量不用。
+
