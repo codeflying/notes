@@ -68,11 +68,11 @@ Protocol2>
 
 ## ViewController 及其子类代码布局
 布局按以下顺序进行：
-    * #pragma mark - Life Cycle
-    * #pragma mark - Delegate
-    * #pragma mark - Event Response
-    * #pragma mark - Private
-    * #pragma mark - Getter and Setter
+* #pragma mark - Life Cycle
+* #pragma mark - Delegate
+* #pragma mark - Event Response
+* #pragma mark - Private
+* #pragma mark - Getter and Setter
 将Getter/Setter放在最后是为了将主要逻辑放在文件的前面。
 
 ## 能不放到 ViewController里的尽量不放在到ViewController
