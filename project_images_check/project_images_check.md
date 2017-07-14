@@ -18,8 +18,8 @@ asset资源主要是以文件夹的方式组织的，形式如下:
 
 >name.imageset  
 >    |- Content.json  
->    |- name@2x.png  
->    |- name@3x.png  
+>    |- name\@2x.png  
+>    |- name\@3x.png  
 
 于是可以通过find 命令与basename命令找出所有的imageset
 
