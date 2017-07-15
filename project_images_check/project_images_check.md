@@ -56,7 +56,7 @@ END{
 
 ## 总结
 
-综上所述，可以得到整个脚本的代码如下所示，基本的check_image.awk就是上文的awk脚本文件。
+综上所述，可以得到整个脚本的代码如下所示，其中check_image.awk就是上文的awk脚本文件。
 ```shell
 #!/bin/sh
 imagesets=/tmp/imagesets
