@@ -89,7 +89,9 @@ dispatch\_barrier\_async的作用是什么？
 
 ## 设计
 大文件下载
+
 设计一个无限滑动的slide show
+
  @autoreleasepool 在哪些情况下会用到，如何设计一个相同功能的实现
 
 ## Coding
