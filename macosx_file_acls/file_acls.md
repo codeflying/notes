@@ -43,3 +43,20 @@ total 16
 
 终于找到了不能修改的原因了，使用 chmod -R -N 对所有拷贝过来的文件夹操作一遍，终于可以快乐的使用电脑了。
 
+
+## Others
+
+一般来说我们直接使用RWX三种权限在USER,GROUP,OTHER下的权限使用就可以了，为什么还要设置这个ACLs呢?
+举个例子:
+
+假设你在 macOS上创建了两个用户，分别有不同的用户设置，并且经常操作某一个目录比如 /Users/Shared/screencasts
+如果只是做一般的读操作，只要把这两个用户放在同一个组即可。但是如果你使用某一个登陆用户(A)在该目录下新建新的文件与目录，那么你就要对它进行chmod操作，才能让你在另一个用户(B)下才能不使用sudo进行操作，并且每新建一个目录和文件都要chmod一次，非常麻烦。这个时候ACLs就有用武之地了。
+
+这时只要对 /Users/Shared/screencasts 目录作以下操作就可以了
+
+```shell
+$ chmod -R +a "group:staff allow list,add_file,search,add_subdirectory,delete_child,readattr,writeattr,readextattr,writeextattr,readsecurity,file_inherit,directory_inherit" /Users/Shared/screencasts
+```
+
+通过inherit，这样之后，就可以愉快地在两个用户之间切换了。
+
