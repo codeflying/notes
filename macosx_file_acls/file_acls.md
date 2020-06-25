@@ -41,5 +41,5 @@ total 16
  0: group:everyone deny write,delete,append,writeattr,writeextattr,chown
 ```
 
-终于找到了不能修改的原因了，使用 chmod -N -R 对所有拷贝过来的文件夹操作一遍，终于可以快乐的使用电脑了。
+终于找到了不能修改的原因了，使用 chmod -R -N 对所有拷贝过来的文件夹操作一遍，终于可以快乐的使用电脑了。
 
