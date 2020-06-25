@@ -23,7 +23,7 @@ total 16
 ~/Documents/leetcode/1_two_sum » xattr main.go
 com.apple.metadata:_kTimeMachineNewestSnapshot
 com.apple.metadata:_kTimeMachineOldestSnapshot
-```shell
+```
 
 发现多出了跟TimeMachine相关的两个attr，会不会是这两个导致的呢，使用 'xattr -c' 命令清除attribute后，查看一下
 ```shell
@@ -31,7 +31,7 @@ com.apple.metadata:_kTimeMachineOldestSnapshot
 total 16
 -rw-r--r--+ 1 guavakid  staff  571  2 16 20:30 main.go
 -rw-r--r--@ 1 guavakid  staff  571  2 26 16:02 solution.c
-```shell
+```
 
 可以看到main.go中的@已经变成了+了，困惑了，这个+号又代表什么呢。查资料得到+表示有设置ACLs，有访问控制权限，可以通过ls的-le选项查看
 
@@ -39,7 +39,7 @@ total 16
 ~/Documents/leetcode/1_two_sum » ls -lae main.go
 -rw-r--r--+ 1 guavakid  staff  571  2 16 20:30 main.go
  0: group:everyone deny write,delete,append,writeattr,writeextattr,chown
-```shell
+```
 
 终于找到了不能修改的原因了，使用 chmod -N -R 对所有拷贝过来的文件夹操作一遍，终于可以快乐的使用电脑了。
 
