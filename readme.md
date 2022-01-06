@@ -7,3 +7,5 @@
 [3. iOS 工程缺少或冗余图片检测](https://github.com/codeflying/notes/blob/master/project_images_check/project_images_check.md)
 
 [4. macOS ACLs](https://github.com/codeflying/notes/blob/master/macosx_file_acls/file_acls.md)
+
+[5. Git 进阶](https://github.com/codeflying/notes/blob/master/pro_git/pro_git.md)
