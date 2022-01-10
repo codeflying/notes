@@ -46,7 +46,7 @@ merge与rebase冲突时，它们的ours和theirs相反
 ## 修改本地多个提交的顺序
 当你有多个提交(时间先后分支为 A, B, C, D)时, 这个时候你想交换B,C两个提交
 
-git rebase A
+git rebase -i A
 ```
 pick B
 pick C
